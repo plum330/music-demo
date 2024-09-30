@@ -4,6 +4,7 @@ import '@/pages/index/index.scss'
 import { useState } from 'react';
 import { getRecommendedMusicListApi, getRecommendedPlaylistApi } from '@/api/modules/music';
 import { Icon } from '@nutui/nutui-react-taro';
+import Music from '@/component/music';
 
 export default function Index() {
   // 定义推荐歌单
@@ -52,18 +53,11 @@ export default function Index() {
   const toPlaylist = () => {
     console.log('on click')
   }
+
   return (
     <View className='wrap'>
       <View className='wrap-content'>
         <Text className='wctt-text'>推荐</Text>
-        {/* <View className='wrap-content-top'>
-          <View className='wrap-content-top-title'>
-            <View className='wctt-placeholder'></View>
-            <View className='wctt-text'>
-              编辑推荐
-            </View>
-          </View>
-        </View> */}
         <View className='wrap-content-body'>
           {
             recommendedPlaylistList.map((item) => {
@@ -85,6 +79,12 @@ export default function Index() {
               )
             })
           }
+        </View>
+      </View>
+      <View className='wrap-content-top'>
+        <Text className='wctt-text'>最新音乐</Text>
+        <View className='wrap-content-music'>
+          <Music dataList={recommendedMusicList} />
         </View>
       </View>
     </View>
