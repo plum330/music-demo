@@ -1,78 +1,51 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { useLoad } from '@tarojs/taro'
 import '@/pages/index/index.scss'
 import { useState } from 'react';
-import { getRecommendedMusicListApi, getRecommendedPlaylistApi } from '@/api/modules/music';
-import { Icon } from '@nutui/nutui-react-taro';
-import Music from '@/component/music';
+import { getRecommendedMembers } from '@/api/modules/music';
+import { member } from '@/models';
+
+import avatar from '@/assets/make_friends.png'
+import Header from '@/component/header';
 
 export default function Index() {
-  // 定义推荐歌单
-  type recommendedPlayList = {
-    id: number;
-    name: string;
-    picUrl: string,
-    playCount: number;
-  }
-  const [recommendedPlaylistList, setRecommendPlaylistList]: [recommendedPlayListList: Array<recommendedPlayList>, setRecommededPlaylistList: any] = useState<Array<recommendedPlayList>>([{
-    id: 0,
-    name: '',
-    picUrl: '',
-    playCount: 0,
-  }])
-
-  // 获取推荐歌单
-  async function getRecommendedPlayListList() {
-    // 获取推荐歌单
-    const {result} = await getRecommendedPlaylistApi({
+  // 推荐
+  const [members, setMembers]: [members: Array<member>, setMembers: any] = useState<Array<member>>([])
+  async function getRecommendedMemberList() {
+    const {result} = await getRecommendedMembers({
       limit: 6,
     })
-    // 保存推荐歌单
-    setRecommendPlaylistList(result)
+    setMembers(result)
   }
-
-  // 保存推荐音乐
-  const [recommendedMusicList, setRecommendMusicList] = useState<any[]>([]);
-
-  const getRecommendedMusicList = async () => {
-    const {result} = await getRecommendedMusicListApi({
-      limit: 10,
-    })
-    // 保存最新音乐列表(强制类型转换)
-    setRecommendMusicList(result as any[])
-  }
-  // 用于监听页面加载执行 -> 监听到页面加载时，获取编辑推荐列表&最新列表
+  // 用于监听页面加载执行 -> 监听到页面加载时，获取编辑推荐列表
   useLoad(() => {
     console.log('Page loaded.')
-    // 展示编辑推荐歌单
-    getRecommendedPlayListList();
-    // 展示最新音乐列表
-    getRecommendedMusicList();
+    getRecommendedMemberList();
   })
 
-  const toPlaylist = () => {
+  const toDetail = () => {
     console.log('on click')
   }
 
   return (
     <View className='wrap'>
-      <View className='wrap-content'>
-        <Text className='wctt-text'>推荐</Text>
-        <View className='wrap-content-body'>
+      <Header />
+      <ScrollView className='wrap-scrollview'
+        scrollY scrollWithAnimation enableFlex
+        style={{height: '100vh'}}
+        onScrollToLower={toDetail}
+      >
+        <View className='wrap-body'>
           {
-            recommendedPlaylistList.map((item) => {
+            members.map((item) => {
               return (
-                <View className='wrap-content-body-item' key={item.id} onClick={toPlaylist}>
+                <View className='wrap-body-item' key={item.id} onClick={toDetail}>
                   <View className='wcbi-body'>
-                    <Image className='wcbi-body-img' src={item.picUrl} />
+                    <Image className='wcbi-body-img' src={avatar} />
                     <View className='wcbi-body-text'>
-                      <Icon value='heart-2' color='#64b578' size='20'></Icon>
-                      <Text className='wcbi-body-text-num'>
-                        {parseInt(String(item.playCount / 10000))}w
-                      </Text>
-                    </View>
-                    <View className='wcbi-body-bottom'>
-                      {item.name}
+                      <Text className='wcbi-body-text-nickname'>{item.nickname}</Text>
+                      <Text className='wcbi-body-text-sex'>{item.sex}</Text>
+                      <Text className='wcbi-body-text-age'>{item.age}</Text>
                     </View>
                   </View>
                 </View>
@@ -80,13 +53,7 @@ export default function Index() {
             })
           }
         </View>
-      </View>
-      <View className='wrap-content-top'>
-        <Text className='wctt-text'>最新音乐</Text>
-        <View className='wrap-content-music'>
-          <Music dataList={recommendedMusicList} />
-        </View>
-      </View>
+      </ScrollView>
     </View>
   )
 }
