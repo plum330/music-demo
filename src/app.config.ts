@@ -1,7 +1,8 @@
 export default defineAppConfig({
   pages: [
     'pages/index/index',
-    'pages/message/index'
+    'pages/message/index',
+    'pages/test/virtual_list/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -31,12 +32,12 @@ export default defineAppConfig({
         iconPath: './assets/message.png',
         selectedIconPath: './assets/message_selected.png'
       },
-      // {
-      //   pagePath: 'pages/Mine/index',
-      //   text: '我的',
-      //   iconPath: './images/user.png',
-      //   selectedIconPath: './images/user_select.png'
-      // }
+      {
+        pagePath: 'pages/test/virtual_list/index',
+        text: '测试',
+        iconPath: './assets/message.png',
+        selectedIconPath: './assets/message_selected.png'
+      }
     ]
   }
 })
