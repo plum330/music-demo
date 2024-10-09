@@ -1,12 +1,13 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { useLoad } from '@tarojs/taro'
 import '@/pages/index/index.scss'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { getRecommendedMembers } from '@/api/modules/music';
 import { member } from '@/models';
 
 import avatar from '@/assets/make_friends.png'
 import Header from '@/component/header';
+import { VirtualList } from '@tarojs/components-advanced/dist/components/virtual-list';
 
 export default function Index() {
   // 推荐
@@ -27,15 +28,52 @@ export default function Index() {
     console.log('on click')
   }
 
+  const Row = React.memo(({id, index, data}: {id: string, index:number, data: any}) => {
+    // return (
+      // <View className='wrap-body'>sss
+      {/* { */}
+        // members.map((item) => {
+          return (
+            <View className='wrap-body-item' id={id} onClick={toDetail}>
+              <View className='wcbi-body'>
+                <Image className='wcbi-body-img' src={avatar} />
+                <View className='wcbi-body-text'>
+                  <Text className='wcbi-body-text-nickname'>{data[index].nickname}</Text>
+                  <Text className='wcbi-body-text-sex'>{data[index].sex}</Text>
+                  <Text className='wcbi-body-text-age'>{data[index].age}</Text>
+                </View>
+              </View>
+            </View>
+          )
+        // })
+      // }
+    // </View>
+    // )
+  })
+
   return (
     <View className='wrap'>
       <Header />
-      <ScrollView className='wrap-scrollview'
+      <VirtualList
+        className='wrap-body'
+        height='100%' /* 列表的高度 */
+        width='100%' /* 列表的宽度 */
+        item={Row} /* 列表单项组件，这里只能传入一个组件 */
+        itemData={members} /* 渲染列表的数据 */
+        itemCount={members.length} /* 渲染列表的长度 */
+        itemSize={50} /* 列表单项的高度  */
+        onScrollToLower={toDetail}
+        // onScroll={({}) => {
+        //   return toDetail
+        // }}
+        renderBottom={<Text>我也是有底线的</Text>}
+      />
+      {/* <ScrollView className='wrap-scrollview'
         scrollY scrollWithAnimation enableFlex
         style={{height: '100vh'}}
         onScrollToLower={toDetail}
-      >
-        <View className='wrap-body'>
+      > */}
+        {/* <View className='wrap-body'>
           {
             members.map((item) => {
               return (
@@ -52,8 +90,8 @@ export default function Index() {
               )
             })
           }
-        </View>
-      </ScrollView>
+        </View> */}
+      {/* </ScrollView> */}
     </View>
   )
 }

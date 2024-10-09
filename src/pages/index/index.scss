@@ -1,13 +1,17 @@
 .wrap {
-  &-scrollview {
-    margin-top: 30px;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  border: 10px solid rgb(192, 11, 38);
+
   &-body {
     background-color: rgb(71, 31, 227);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+    // display: flex;
+    // flex-direction: column;
+    position: relative;
+    margin-top: 100px;
+    height: calc(100vh - 100px);
+
     &-item {
       margin-bottom: 20px; // 行距
       .wcbi-body {
@@ -44,6 +48,3 @@
     }
   }
 }
-
-
-

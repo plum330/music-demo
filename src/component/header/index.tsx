@@ -30,13 +30,13 @@ const Header: React.FC<{selectIndex?: number}> = ({selectIndex = 0}) => {
     }
   }
   return (
-    <>
-      <View className='wrap-header'>
+    <View className='wrap-fixed'>
+      {/* <View className='wrap-header'> */}
         <View className='wrap-header-box'>
           <Image className='wrap-header-box-img' src={plane} />
           <Text className='wrap-header-box-text'>1234567</Text>
         </View>
-      </View>
+      {/* </View> */}
       <View className='wrap-tabs'>
         {
           tabs.map((item: string, index: number) => {
@@ -50,7 +50,7 @@ const Header: React.FC<{selectIndex?: number}> = ({selectIndex = 0}) => {
           })
         }
       </View>
-    </>
+    </View>
   )
 };
 
